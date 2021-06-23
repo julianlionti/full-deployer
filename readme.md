@@ -13,7 +13,7 @@ npm i -D full-deployer
 You will have to create a file called deployerrc.json in the root folder of your proyect
 
 
-```json
+```ts
 {
     destination: "string", //full deploy path
     deployDir: "string", //OPTIONAL dir to deploy - Default build

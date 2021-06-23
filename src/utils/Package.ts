@@ -27,7 +27,7 @@ class Package {
     if (nextVersion !== '' && nextVersion !== this.package.version) {
       Console.start('Modifyng package.json...')
       try {
-        execSync(`npm version ${nextVersion}`)
+        execSync(`npm --no-git-tag-version version ${nextVersion}`)
       } catch (ex) {
         Console.error('Cannot upload version', '')
       }
