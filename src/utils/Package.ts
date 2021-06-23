@@ -19,7 +19,7 @@ class Package {
 
   changeVersion = async () => {
     Console.info(
-      'Do you want to update de package.json version? If not, no backup for that version will be created',
+      'Before deploying, do you want to update de package.json version? If not, the backup generated will not be versioned',
     )
     Console.info(`Last version is: ${this.package.version}`)
     const nextVersion = await prompt<string>('Next version (Leave it empty if not): ')
