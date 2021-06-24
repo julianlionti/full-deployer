@@ -8,7 +8,7 @@ const redBright = chalk.redBright
 const greenBright = chalk.greenBright
 
 const info = (text: string) => console.log(white(text))
-const warn = (text: string) => console.log(orange(text))
+const warn = (text: string) => console.log(chalk.white.inverse(text))
 const start = (text: string) => console.log(green(text))
 
 const end = (text: string) => {
