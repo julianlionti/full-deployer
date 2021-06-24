@@ -8,39 +8,40 @@ interface PackageProps {
   version: string
 }
 
-class Package {
-  package: PackageProps
-  pkgPath = path.resolve('./package.json')
+const changeVersion = async (noTag: boolean) => {
+  const pkgPath = path.resolve('./package.json')
+  const pkg = JSON.parse(fs.readFileSync(pkgPath).toString()) as PackageProps
+  Console.info(
+    'Before deploying, do you want to update de package.json version? If not, the backup generated will not be versioned',
+  )
+  Console.info(`Last version is: ${pkg.version}`)
+  const nextVersion = await prompt<string>('Next version (Leave it empty if not): ')
 
-  constructor() {
-    const json = JSON.parse(fs.readFileSync(this.pkgPath).toString()) as PackageProps
-    this.package = json
-  }
-
-  changeVersion = async () => {
-    Console.info(
-      'Before deploying, do you want to update de package.json version? If not, the backup generated will not be versioned',
-    )
-    Console.info(`Last version is: ${this.package.version}`)
-    const nextVersion = await prompt<string>('Next version (Leave it empty if not): ')
-
-    if (nextVersion !== '' && nextVersion !== this.package.version) {
-      Console.start('Modifyng package.json...')
-      try {
-        execSync(`npm  version ${nextVersion}`)
-        Console.warn('Git tagged for this version has been created. To push tags you can')
-        Console.warn(`git push origin v${nextVersion}`)
-        Console.warn(`or push all tags (not recommended)`)
-        Console.warn(`git push --tags`)
-      } catch (ex) {
-        Console.error('Cannot upload version', '')
+  if (nextVersion !== '' && nextVersion !== pkg.version) {
+    Console.start('Modifyng package.json...')
+    try {
+      execSync(`npm ${noTag ? '--no-git-tag-version' : ''} version ${nextVersion}`)
+      if (!noTag) {
+        Console.warn(
+          'Git tagged for this version has been created. To push tags you can  ',
+        )
+        Console.warn(`git push origin v${nextVersion} `)
+        Console.warn(`or push all tags (not recommended)  `)
+        Console.warn(`git push --tags `)
       }
-      Console.end('package.json modified succesfully')
-      return nextVersion
+    } catch (ex) {
+      Console.error(
+        'Cannot upload version',
+        ex.message.includes('Git working directory not clean')
+          ? 'Git must be commited'
+          : '',
+      )
     }
-
-    return 'last'
+    Console.end('package.json modified succesfully')
+    return pkg.version //
   }
+
+  return 'noversion'
 }
 
-export default Package
+export default {changeVersion}

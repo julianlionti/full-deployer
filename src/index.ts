@@ -11,13 +11,23 @@ import {buildProyect, sleep} from './utils/Misc'
 import Server from './utils/Server'
 import Package from './utils/Package'
 import chalk from 'chalk'
+import Console from './utils/Console'
+import yargs from 'yargs/yargs'
+import {hideBin} from 'yargs/helpers'
 
-const noBuild = false
-const noBackup = false
 const init = async () => {
   clear()
   about()
 
+  const argv = await yargs(hideBin(process.argv)).argv
+  const noBuild = argv.build === false ? true : false
+  const noBackup = argv.backup === false ? true : false
+  const noTag = argv.tag === false ? true : false
+  const noPrompt = (argv.Y || argv.y || false) as boolean
+
+  console.log()
+  Console.warn('Initializing')
+  console.log()
   const config = Configuration.readFile()
 
   if (!noBuild) {
@@ -32,12 +42,18 @@ const init = async () => {
   await sleep()
 
   if (!noBackup) {
-    await Backup.create(server)
+    await Backup.create(server, noTag, noPrompt)
   }
 
   await sleep()
   await server.uploadFiles()
+  await server.restartPm2()
   server.close()
+
+  console.log()
+  about()
+  Console.warn('Full-Deployer has finished succesfully')
+  console.log()
 
   exit()
 }

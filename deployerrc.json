@@ -1,5 +1,4 @@
 {
-  "protocol": "SFTP",
   "host": "magyp-mobile-prod.magyp.ar",
   "port": 22,
   "user": "jlionti",
@@ -8,5 +7,8 @@
   "destination": "/var/www/pruebas",
   "buildScript": "build",
   "deployDir": "build",
-  "backupsDir": "__bk"
+  "backupsDir": "__bk",
+
+  "pm2proccessId": 3
+
 }

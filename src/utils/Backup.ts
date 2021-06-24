@@ -16,17 +16,14 @@ const mkBkDir = async (server: Server, bkDir: string) => {
     await sftp.mkdir(full)
   }
 
-  const bkList = (await sftp.list(full)).filter((e) => e.name.includes(bkDir))
-  const bkNumber = bkList.length + 1
-
-  if (bkDir === 'last') {
+  if (bkDir === 'noversion') {
     const fullDatePath = slash(path.join(full, bkDir))
     await sftp.mkdir(fullDatePath)
     return fullDatePath
   }
 
   const now = new Date()
-  const datedDir = `bk.${bkNumber}.-${now.getDate()}-${
+  const datedDir = `bk.v${bkDir}-${now.getDate()}-${
     now.getMonth() + 1
   }-${now.getFullYear()}`
 
@@ -53,15 +50,16 @@ const moveFiles = async (server: Server, backpath: string) => {
   }
 }
 
-const create = async (server: Server) => {
+const create = async (server: Server, noTag: boolean, noPrompt: boolean) => {
   try {
-    const shouldBackup = await prompt<YesNoQuestion>(
-      'Do you want to create a backup? n/Y',
-    )
-    if (shouldBackup === 'N') return
+    if (!noPrompt) {
+      const shouldBackup = await prompt<YesNoQuestion>(
+        'Do you want to create a backup? n/Y',
+      )
+      if (shouldBackup === 'N') return
+    }
 
-    const pk = new Package()
-    const versionBkDir = await pk.changeVersion()
+    const versionBkDir = await Package.changeVersion(noTag)
 
     Console.start('Creating backup... Please wait')
 

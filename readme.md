@@ -15,15 +15,28 @@ You will have to create a file called deployerrc.json in the root folder of your
 
 ```ts
 {
-    destination: "string", //full deploy path
-    deployDir: "string", //OPTIONAL dir to deploy - Default build
-    backupsDir: "string", ////OPTIONAL bk dir name in server - Default __bk
+  "host": "string",
+  "port": number, // OPTIONAL - Default 22
+  "user": "string",
+  "pass": "string",
 
-    host: "string",
-    user: "string",
-    pass: "string",
-    port: number, //OPTIONAL - Default 22
+  "destination": "string",
+  "buildScript": "string", //OPTIONAL - Default 'build'
+  "deployDir": "string", //OPTIONAL - Default 'build'
+  "backupsDir": "string", // OPTIONAL - Default '__bk'
+
+  "pm2proccessId": number //OPTIONAL for restaring PM2 proccesId
 }
 ```
 
+If you have git initialized it will create a new TAG from new version.
+If no version changes, the bk will be created in noversion folder in destination
 
+# Commandline options
+
+```ts
+full-deployer -y --no-tag --no-backup --no-build
+```
+
+if '-y' full-deployer will crete a backup
+if '--no-tag' no tag will created when update version

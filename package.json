@@ -1,6 +1,6 @@
 {
     "name": "full-deployer",
-    "version": "0.2.8",
+    "version": "0.2.3",
     "description": "",
     "main": "build/index.js",
     "scripts": {
@@ -20,6 +20,7 @@
         "@types/node": "^15.12.4",
         "@types/ssh2": "^0.5.46",
         "@types/ssh2-sftp-client": "^5.3.1",
+        "@types/yargs": "^17.0.0",
         "nodemon": "^2.0.7",
         "ts-node": "^10.0.0",
         "typescript": "^4.3.4"
@@ -34,6 +35,7 @@
         "cli-progress": "^3.9.0",
         "figlet": "^1.5.0",
         "ssh2": "^1.1.0",
-        "ssh2-sftp-client": "^7.0.0"
+        "ssh2-sftp-client": "^7.0.0",
+        "yargs": "^17.0.1"
     }
 }

@@ -15,6 +15,7 @@ export interface ConfigProps {
   deployDir: string
   destination: string
   backupsDir: string
+  pm2proccessId: number
 }
 
 const readFile = (): ConfigProps => {
@@ -40,6 +41,7 @@ const readFile = (): ConfigProps => {
     buildScript: json.buildScript || 'build',
     deployDir: json.deployDir || 'build',
     backupsDir: json.backupsDir || '__bk',
+    pm2proccessId: json.pm2proccessId || -1,
   }
 }
 
