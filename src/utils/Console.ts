@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import {exit} from 'process'
 
-const orange = chalk.bgYellow
+const orange = chalk.yellow
 const white = chalk.white
 const green = chalk.green
 const redBright = chalk.redBright
