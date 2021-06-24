@@ -32,8 +32,11 @@ class Package {
       } catch (ex) {
         Console.error('Cannot upload version', '')
       }
-      Console.start('package.json modified succesfully')
+      Console.end('package.json modified succesfully')
+      return nextVersion
     }
+
+    return 'last'
   }
 }
 

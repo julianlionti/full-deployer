@@ -18,10 +18,12 @@ const init = async () => {
   about()
 
   const config = Configuration.readFile()
-  /*
+
   if (!noBuild) {
     buildProyect(config)
   }
+
+  await sleep()
 
   const server = new Server(config)
   await server.connect()
@@ -35,10 +37,6 @@ const init = async () => {
   await sleep()
   await server.uploadFiles()
   server.close()
-  */
-
-  const pk = new Package()
-  await pk.changeVersion()
 
   exit()
 }

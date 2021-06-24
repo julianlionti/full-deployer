@@ -3,8 +3,9 @@ import path from 'path'
 import {slash} from './Paths'
 import Console from './Console'
 import {prompt, YesNoQuestion} from './Misc'
+import Package from './Package'
 
-const mkBkDir = async (server: Server) => {
+const mkBkDir = async (server: Server, bkDir: string) => {
   const {config, sftp} = server
   const {destination} = config
   const full = slash(path.join(destination, config.backupsDir))
@@ -15,8 +16,14 @@ const mkBkDir = async (server: Server) => {
     await sftp.mkdir(full)
   }
 
-  const bkList = await sftp.list(full)
+  const bkList = (await sftp.list(full)).filter((e) => e.name.includes(bkDir))
   const bkNumber = bkList.length + 1
+
+  if (bkDir === 'last') {
+    const fullDatePath = slash(path.join(full, bkDir))
+    await sftp.mkdir(fullDatePath)
+    return fullDatePath
+  }
 
   const now = new Date()
   const datedDir = `bk.${bkNumber}.-${now.getDate()}-${
@@ -53,9 +60,12 @@ const create = async (server: Server) => {
     )
     if (shouldBackup === 'N') return
 
+    const pk = new Package()
+    const versionBkDir = await pk.changeVersion()
+
     Console.start('Creating backup... Please wait')
 
-    const finalpath = await mkBkDir(server)
+    const finalpath = await mkBkDir(server, versionBkDir)
     await moveFiles(server, finalpath)
 
     Console.end('Backup created succesfully')
