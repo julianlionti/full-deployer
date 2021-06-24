@@ -28,7 +28,10 @@ class Package {
       Console.start('Modifyng package.json...')
       try {
         execSync(`npm  version ${nextVersion}`)
-        execSync(`git push origin v${nextVersion}`)
+        Console.warn('Git tagged for this version has been created. To push tags you can')
+        Console.warn(`git push origin v${nextVersion}`)
+        Console.warn(`or push all tags (not recommended)`)
+        Console.warn(`git push --tags`)
       } catch (ex) {
         Console.error('Cannot upload version', '')
       }

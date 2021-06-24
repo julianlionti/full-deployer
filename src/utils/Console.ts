@@ -1,18 +1,15 @@
 import chalk from 'chalk'
 import {exit} from 'process'
 
+const orange = chalk.bgYellow
 const white = chalk.white
 const green = chalk.green
 const redBright = chalk.redBright
 const greenBright = chalk.greenBright
 
-const info = (text: string) => {
-  console.log(white(text))
-}
-
-const start = (text: string) => {
-  console.log(green(text))
-}
+const info = (text: string) => console.log(white(text))
+const warn = (text: string) => console.log(orange(text))
+const start = (text: string) => console.log(green(text))
 
 const end = (text: string) => {
   console.log(greenBright(text))
@@ -30,4 +27,5 @@ export default {
   end,
   error,
   info,
+  warn,
 }
